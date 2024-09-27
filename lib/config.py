@@ -118,19 +118,17 @@ class Config:
 		if not self.config["no_config"] and path:
 			try:
 				config_file = json.loads(open(path, "r").read())
-				for section in config_file:
-					for key in config_file[section]:
-						CONFIG_DEFAULT[section][key]["value"] = config_file[section][key]
+				for k in config_file:
+					keys = k.split("_", 1)
+					CONFIG_DEFAULT[keys[0]][keys[1]]["value"] = config_file[k]
 
 			except FileNotFoundError:
 				config_file = {}
-				for entry in conf_map:
-					e = conf_map[entry].split(".")
-					section = e[0]
-					key = e[1]
-					if section not in config_file:
-						config_file[section] = {}
-					config_file[section][key] = CONFIG_DEFAULT[section][key]["value"]
+				for section in CONFIG_DEFAULT:
+					for key in CONFIG_DEFAULT[section]:
+						e = CONFIG_DEFAULT[section][key]
+						full_key = f"{section}_{key}"
+						config_file[full_key] = e["value"]
 
 				with open(path, "w") as file:
 					print(f"Config file not found. Saving default configuration to {path}...")
