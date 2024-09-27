@@ -1,4 +1,5 @@
 window.addEventListener("load", () => {
+	loadConfig()
 	update()
 	setInterval(update, 1500)
 })
@@ -9,12 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	try {
 		let accent = localStorage.getItem("statusapp-accent")
 		if (accent) selectAccent(accent, false)
-		else selectAccent("red", false)
+		else selectAccent(config.general_default_accent, false)
 		let theme = localStorage.getItem("statusapp-light")
 		if (theme) selectTheme(theme == "true", false)
-		else selectTheme(false, false)
-	}
-	catch (e) {}
+		else selectTheme(config.general_default_light_mode, false)
+	} catch (e) {}
 })
 
 window.addEventListener("hashchange", (event) => {
@@ -72,8 +72,7 @@ function selectAccent(accent, save=true) {
 	if (!save) return
 	try {
 		localStorage.setItem("statusapp-accent", accent)
-	}
-	catch (e) {
+	} catch (e) {
 		console.warn("Cookies are disabled. Settings will not be saved.")
 	}
 }
@@ -87,10 +86,28 @@ function selectTheme(isLight, save=true) {
 	if (!save) return
 	try {
 		localStorage.setItem("statusapp-light", isLight)
-	}
-	catch (e) {
+	} catch (e) {
 		console.warn("Cookies are disabled. Settings will not be saved.")
 	}
+}
+
+let config
+function loadConfig() {
+	if (document.hidden) return
+	let xhr = new XMLHttpRequest()
+	xhr.open("GET", "api/config")
+	xhr.onload = function() {
+		try {
+			config = JSON.parse(this.responseText)
+			updateTitle(config.general_title)
+			updatePageTitle(config.general_page_title)
+			showDeviceName(config.general_show_device_name)
+			showThemePalette(config.general_show_theme_palette)
+		} catch (e) {
+			console.error(this.responseText)
+		}
+	}
+	xhr.send()
 }
 
 function update() {
@@ -116,8 +133,7 @@ function parseData(resp) {
 		updateNet(data_prev.network, data.network)
 		updateHost(data.host)
 		data_prev = data
-	}
-	catch (e) {
+	} catch (e) {
 		console.error(resp.responseText)
 	}
 }

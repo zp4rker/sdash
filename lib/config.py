@@ -4,6 +4,32 @@ from os import environ
 
 
 CONFIG_DEFAULT = {
+	"general": {
+		"title": {
+			"value": "Status",
+			"desc": "title to show on page"
+		},
+		"page_title": {
+			"value": "Status",
+			"desc": "html title of page"
+		},
+		"show_device_name": {
+			"value": True,
+			"desc": "whether to show device name under title"
+		},
+		"default_light_mode": {
+			"value": False,
+			"desc": "default status of light mode"
+		},
+		"default_accent": {
+			"value": "red",
+			"desc": "default accent"
+		},
+		"show_theme_palette": {
+			"value": True,
+			"desc": "whether to show the theme palette button"
+		}
+	},
 	"server": {
 		"port": {
 			"value": 9090,
@@ -154,6 +180,9 @@ class Config:
 			return self.config[var_name]
 		except KeyError:
 			return None
+	
+	def map(self):
+		return self.config
 
 
 global config

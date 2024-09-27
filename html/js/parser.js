@@ -167,3 +167,27 @@ function updateHost(host) {
 	mkItem("host-list", "memory", "App memory", parseSize(host.app_memory, "B"))
 	mkItem("host-list", "speed", "Load averages", host.loadavg.join(", "))
 }
+
+
+function updateTitle(title) {
+	set("main-title", title)
+}
+
+
+function updatePageTitle(pageTitle) {
+	document.title = pageTitle
+}
+
+
+function showDeviceName(showDeviceName) {
+	if (!showDeviceName) {
+		get("main-device-name").style.display = "none"
+	}
+}
+
+
+function showThemePalette(showThemePalette) {
+	if (!showThemePalette) {
+		get("main-theme-button").style.display = "none"
+	}
+}

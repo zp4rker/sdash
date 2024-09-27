@@ -30,9 +30,17 @@ async def index(request):
 
 
 @routes.get("/api/status")
-async def api(request):
+async def api_status(request):
 	try:
 		return web.json_response(await get_status())
+	except:
+		report = traceback.format_exc().replace(f"{working_dir}/", "")
+		return web.Response(text=report, status=500)
+	
+@routes.get("/api/config")
+async def api_config(request):
+	try:
+		return web.json_response(config.map())
 	except:
 		report = traceback.format_exc().replace(f"{working_dir}/", "")
 		return web.Response(text=report, status=500)
