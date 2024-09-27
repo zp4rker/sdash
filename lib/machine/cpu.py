@@ -141,6 +141,12 @@ def get_stat():
 def find_cpu_thermal():
 	location = "/sys/class/hwmon"
 
+	if not os.path.exists(location):
+		return {
+			"location": "dummy sensor",
+			"name": "dummy name"
+		}
+
 	for sensor in ls(location):
 		name = get(path(sensor, "name"))
 		if name not in cpu_thermals:
