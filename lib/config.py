@@ -135,7 +135,6 @@ class Config:
 				with open(path, "w") as file:
 					print(f"Config file not found. Saving default configuration to {path}...")
 					file.write(json.dumps(config_file, indent=4))
-					file.close()
 
 
 		# Fallback values from default config
