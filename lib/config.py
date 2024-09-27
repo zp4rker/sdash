@@ -101,13 +101,13 @@ CONFIG_DEFAULT = {
 class Config:
 	def __init__(self):
 		parser = argparse.ArgumentParser(description="Status - simple and lightweight system monitoring tool for small homeservers.")
-		conf_map = {}
+		self.conf_map = {}
 
 		# Read config from arguments
 		for section in CONFIG_DEFAULT:
 			for key in CONFIG_DEFAULT[section]:
 				a = CONFIG_DEFAULT[section][key]
-				conf_map[f"{section}_{key}"] = f"{section}.{key}"
+				self.conf_map[f"{section}_{key}"] = f"{section}.{key}"
 				if "desc" not in a:
 					continue
 
@@ -144,17 +144,19 @@ class Config:
 		if not self.config["no_config"] and path:
 			try:
 				config_file = json.loads(open(path, "r").read())
-				for k in config_file:
-					keys = k.split("_", 1)
-					CONFIG_DEFAULT[keys[0]][keys[1]]["value"] = config_file[k]
+				for section in config_file:
+					for key in config_file[section]:
+						CONFIG_DEFAULT[section][key]["value"] = config_file[section][key]
 
 			except FileNotFoundError:
 				config_file = {}
-				for section in CONFIG_DEFAULT:
-					for key in CONFIG_DEFAULT[section]:
-						e = CONFIG_DEFAULT[section][key]
-						full_key = f"{section}_{key}"
-						config_file[full_key] = e["value"]
+				for entry in self.conf_map:
+					e = self.conf_map[entry].split(".")
+					section = e[0]
+					key = e[1]
+					if section not in config_file:
+						config_file[section] = {}
+					config_file[section][key] = CONFIG_DEFAULT[section][key]["value"]
 
 				with open(path, "w") as file:
 					print(f"Config file not found. Saving default configuration to {path}...")
@@ -182,7 +184,15 @@ class Config:
 			return None
 	
 	def map(self):
-		return self.config
+		config_file = {}
+		for entry in self.conf_map:
+			e = self.conf_map[entry].split(".")
+			section = e[0]
+			key = e[1]
+			if section not in config_file:
+				config_file[section] = {}
+			config_file[section][key] = CONFIG_DEFAULT[section][key]["value"]
+		return config_file
 
 
 global config

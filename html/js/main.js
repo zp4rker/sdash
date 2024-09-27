@@ -99,10 +99,10 @@ function loadConfig() {
 	xhr.onload = function() {
 		try {
 			config = JSON.parse(this.responseText)
-			updateTitle(config.general_title)
-			updatePageTitle(config.general_page_title)
-			showDeviceName(config.general_show_device_name)
-			showThemePalette(config.general_show_theme_palette)
+			updateTitle(config.general.title)
+			updatePageTitle(config.general.page_title)
+			showDeviceName(config.general.show_device_name)
+			showThemePalette(config.general.show_theme_palette)
 		} catch (e) {
 			console.error(this.responseText)
 		}
