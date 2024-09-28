@@ -28,6 +28,10 @@ CONFIG_DEFAULT = {
 		"show_theme_palette": {
 			"value": True,
 			"desc": "whether to show the theme palette button"
+		},
+		"kb_size": {
+			"value": 1024,
+			"desc": "amount of bytes in a kilobyte"
 		}
 	},
 	"server": {

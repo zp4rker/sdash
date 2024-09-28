@@ -60,8 +60,11 @@ function updateCPU(cpu) {
 	_values_freq.addNode(`Base: ${parseSize(freq_base * 1000, "Hz")}`, freq_base)
 	mkItem("cpu-list", "speed", "Speed", _values_freq)
 
-	mkItem("cpu-list", "cached", "Cache size", parseSize(cpu.cache / 1024 * 1000, "B"))
+	mkItem("cpu-list", "cached", "Cache size", parseSize(cpu.cache / 1024 * kbSize, "B"))
 }
+
+
+let kbSize = 1024
 
 
 function updateMem(mem) {
@@ -100,8 +103,8 @@ function updateStorage(storage) {
 
 		// Add to disks list
 		mkItem("storage-list", p.icon, disk, [
-			`Using ${parseSize(used / 1000, "B")} out of ${parseSize(p.total / 1000, "B")}`,
-			`${parseSize(p.available / 1000, "B")} is available`
+			`Using ${parseSize(used / kbSize, "B")} out of ${parseSize(p.total / kbSize, "B")}`,
+			`${parseSize(p.available / kbSize, "B")} is available`
 		], disk)
 
 		all_used += used
@@ -118,16 +121,16 @@ function updateStorage(storage) {
 	}
 
 	let all_free = all_total - all_used
-	let s = parseSize(all_used / 1000, "B").split(" ")
+	let s = parseSize(all_used / kbSize, "B").split(" ")
 
 
 	// Add to UI
-	set("main-storage", `Using ${s.join(" ")} out of ${parseSize(all_total / 1000, "B")}`)
+	set("main-storage", `Using ${s.join(" ")} out of ${parseSize(all_total / kbSize, "B")}`)
 
 	mkBar("storage-bar",
 		all_used / all_total, s[0], s[1],
-		`${parseSize(all_total / 1000, "B")} in total`,
-		`${parseSize(all_free / 1000, "B")} is available`
+		`${parseSize(all_total / kbSize, "B")} in total`,
+		`${parseSize(all_free / kbSize, "B")} is available`
 	)
 
 	storage_last = storage
@@ -137,8 +140,8 @@ function updateStorage(storage) {
 function updateNet(net_last, net) {
 	let rx_diff = net.rx - net_last.rx
 	let tx_diff = net.tx - net_last.tx
-	let rx_speed = rx_diff / 1.5 / (1000 / 8)
-	let tx_speed = tx_diff / 1.5 / (1000 / 8)
+	let rx_speed = rx_diff / 1.5 / (kbSize / 8)
+	let tx_speed = tx_diff / 1.5 / (kbSize / 8)
 
 	set("main-network", parseSize(rx_speed + tx_speed, "bit/s"))
 
@@ -151,10 +154,10 @@ function updateNet(net_last, net) {
 	mkItem("net-list", "speed", "Connection speed", netspeed)
 
 	mkItem("net-list", "arrow_upward", "Upload", [
-		`${parseSize(net.tx / 1000, "B")} since boot`
+		`${parseSize(net.tx / kbSize, "B")} since boot`
 	])
 	mkItem("net-list", "arrow_downward", "Download", [
-		`${parseSize(net.rx / 1000, "B")} since boot`
+		`${parseSize(net.rx / kbSize, "B")} since boot`
 	])
 }
 
@@ -204,4 +207,9 @@ function updateTheme(lightMode, defaultAccent) {
 		if (theme) selectTheme(theme == "true", false)
 		else selectTheme(lightMode, false)
 	} catch (e) {}
+}
+
+
+function updateKbSize(amount) {
+	kbSize = amount
 }

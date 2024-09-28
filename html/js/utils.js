@@ -48,23 +48,24 @@ Array.prototype.append = function() {
 }
 
 function parseSize(value, unit="") {
+	let bsize = unit == "B" ? kbSize : 1000
 	if (value == null) return null
 	let addon = "K"
 	let r_value = Math.round(value)
-	if (r_value >= 1000) {
+	if (r_value >= bsize) {
 		addon = "M"
-		value /= 1000
-		r_value = Math.round(r_value / 1000)
+		value /= bsize
+		r_value = Math.round(r_value / bsize)
 	}
-	if (r_value >= 1000) {
+	if (r_value >= bsize) {
 		addon = "G"
-		value /= 1000
-		r_value = Math.round(r_value / 1000)
+		value /= bsize
+		r_value = Math.round(r_value / bsize)
 	}
-	if (r_value >= 1000) {
+	if (r_value >= bsize) {
 		addon = "T"
-		value /= 1000
-		r_value = Math.round(r_value / 1000)
+		value /= bsize
+		r_value = Math.round(r_value / bsize)
 	}
 	let fixd = 0
 	let ferst = value.toFixed(2).split(".")[0].length
