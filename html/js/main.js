@@ -6,15 +6,15 @@ window.addEventListener("load", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 	loadBackButtons()
-	loadThemePicker()
-	try {
+	// loadThemePicker()
+	/* try {
 		let accent = localStorage.getItem("statusapp-accent")
 		if (accent) selectAccent(accent, false)
-		else selectAccent(config.general_default_accent, false)
+		else selectAccent("red", false)
 		let theme = localStorage.getItem("statusapp-light")
 		if (theme) selectTheme(theme == "true", false)
-		else selectTheme(config.general_default_light_mode, false)
-	} catch (e) {}
+		else selectTheme(true, false)
+	} catch (e) {} */
 })
 
 window.addEventListener("hashchange", (event) => {
@@ -103,6 +103,7 @@ function loadConfig() {
 			updatePageTitle(config.general.page_title)
 			showDeviceName(config.general.show_device_name)
 			showThemePalette(config.general.show_theme_palette)
+			updateTheme(config.general.default_light_mode, config.general.default_accent)
 		} catch (e) {
 			console.error(this.responseText)
 		}

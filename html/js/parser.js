@@ -189,5 +189,19 @@ function showDeviceName(showDeviceName) {
 function showThemePalette(showThemePalette) {
 	if (!showThemePalette) {
 		get("main-theme-button").style.display = "none"
+	} else {
+		loadThemePicker()
 	}
+}
+
+
+function updateTheme(lightMode, defaultAccent) {
+	try {
+		let accent = localStorage.getItem("statusapp-accent")
+		if (accent) selectAccent(defaultAccent, false)
+		else selectAccent("red", false)
+		let theme = localStorage.getItem("statusapp-light")
+		if (theme) selectTheme(theme == "true", false)
+		else selectTheme(lightMode, false)
+	} catch (e) {}
 }
