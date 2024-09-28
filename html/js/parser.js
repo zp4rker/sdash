@@ -198,8 +198,8 @@ function showThemePalette(showThemePalette) {
 function updateTheme(lightMode, defaultAccent) {
 	try {
 		let accent = localStorage.getItem("statusapp-accent")
-		if (accent) selectAccent(defaultAccent, false)
-		else selectAccent("red", false)
+		if (accent) selectAccent("red", false)
+		else selectAccent(defaultAccent, false)
 		let theme = localStorage.getItem("statusapp-light")
 		if (theme) selectTheme(theme == "true", false)
 		else selectTheme(lightMode, false)
